@@ -6,6 +6,7 @@ const queryOptions = {
   url: ['https://*.youtube.com/*'],
 };
 
+// Check for open YouTube tabs
 function checkCurrentTab() {
   chrome.tabs.query(queryOptions, function (obj) {
     if (obj.length === 0) return;
@@ -14,6 +15,7 @@ function checkCurrentTab() {
   });
 }
 
+// Filter on the changeInfo object
 function changeInfoFilter(changeInfo) {
   if (changeInfo.status === 'complete' || changeInfo.hasOwnProperty('audible'))
     return true;
