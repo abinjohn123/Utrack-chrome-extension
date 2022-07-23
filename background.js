@@ -10,8 +10,35 @@ let isTimerActive = false;
 let startTime = '';
 let endTime = '';
 let elapsedTime = 0;
-let logTimer = '';
 
+const now = new Date();
+const today = new Date(
+  `${now.getFullYear()} ${now.getMonth()} ${now.getDate()}`
+).getTime();
+
+function viewStorage() {
+  chrome.storage.sync.get(`${today}`, function (obj) {
+    console.log(obj);
+  });
+}
+
+async function makeStorageEntry() {
+  const obj = await chrome.storage.sync.get(`${today}`);
+  if (Object.keys(obj).length === 0)
+    chrome.storage.sync.set({ [today]: 0 }, function () {
+      console.log(`${today} entry made in storage`);
+    });
+}
+
+async function updateStorage(time) {
+  const obj = await chrome.storage.sync.get(`${today}`);
+  const currentElapsed = obj[today];
+  const newElapsed = currentElapsed + time;
+  await chrome.storage.sync.set({ [today]: newElapsed });
+  viewStorage();
+}
+
+//Timer start and stop
 function startTimer() {
   if (isTimerActive) return;
 
@@ -25,10 +52,9 @@ function stopTimer() {
 
   isTimerActive = false;
   endTime = new Date();
-  elapsedTime += (endTime - startTime) / 1000;
-
+  elapsedTime = (endTime - startTime) / 1000;
+  updateStorage(elapsedTime);
   console.log('Timer Stop');
-  console.log(elapsedTime);
 }
 
 // Check for open YouTube tabs
@@ -61,3 +87,6 @@ chrome.tabs.onUpdated.addListener(function (_, changeInfo, tab) {
     checkYouTubeTabs();
   }
 });
+
+//INIT
+makeStorageEntry();
