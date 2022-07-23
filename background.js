@@ -6,12 +6,42 @@ const queryOptions = {
   url: ['https://*.youtube.com/*'],
 };
 
-// Check for open YouTube tabs
-function checkCurrentTab() {
-  chrome.tabs.query(queryOptions, function (obj) {
-    if (obj.length === 0) return;
+let isTimerActive = false;
+let startTime = '';
+let endTime = '';
+let elapsedTime = 0;
+let logTimer = '';
 
-    console.log(obj);
+function startTimer() {
+  if (isTimerActive) return;
+
+  isTimerActive = true;
+  startTime = new Date();
+  console.log('Timer Start');
+}
+
+function stopTimer() {
+  if (!isTimerActive) return;
+
+  isTimerActive = false;
+  endTime = new Date();
+  elapsedTime += (endTime - startTime) / 1000;
+
+  console.log('Timer Stop');
+  console.log(elapsedTime);
+}
+
+// Check for open YouTube tabs
+function checkYouTubeTabs() {
+  chrome.tabs.query(queryOptions, function (tabs) {
+    if (tabs.length === 0) {
+      stopTimer();
+      return;
+    }
+
+    if (tabs.some((tab) => tab.active || (!tab.active && tab.audible))) {
+      startTimer();
+    } else stopTimer();
   });
 }
 
@@ -24,9 +54,10 @@ function changeInfoFilter(changeInfo) {
 }
 
 //Listeners
-chrome.tabs.onActivated.addListener(checkCurrentTab);
+chrome.tabs.onActivated.addListener(checkYouTubeTabs);
+chrome.tabs.onRemoved.addListener(checkYouTubeTabs);
 chrome.tabs.onUpdated.addListener(function (_, changeInfo, tab) {
   if (changeInfoFilter(changeInfo) && tab.url.includes(URLSnippet)) {
-    checkCurrentTab();
+    checkYouTubeTabs();
   }
 });
