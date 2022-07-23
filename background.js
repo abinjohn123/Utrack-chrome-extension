@@ -3,16 +3,19 @@
 console.log('working');
 const URLSnippet = 'youtube.com';
 const queryOptions = {
-  active: true,
-  lastFocusedWindow: true,
+  url: ['https://*.youtube.com/*'],
+  status: 'complete',
 };
 
-async function checkCurrentTab() {
-  const [tab] = await chrome.tabs.query(queryOptions);
-
-  if (!tab.url.includes(URLSnippet)) return;
-
-  // start or stop countdown
-  // OR send message to UI
+function checkCurrentTab() {
+  chrome.tabs.query(queryOptions, function (obj) {
+    console.log(obj);
+  });
 }
-checkCurrentTab();
+
+//Listeners
+chrome.tabs.onActivated.addListener(checkCurrentTab);
+chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+  if (changeInfo.hasOwnProperty('url') || changeInfo.hasOwnProperty('audible'))
+    checkCurrentTab();
+});
