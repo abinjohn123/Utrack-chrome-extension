@@ -4,18 +4,27 @@ console.log('working');
 const URLSnippet = 'youtube.com';
 const queryOptions = {
   url: ['https://*.youtube.com/*'],
-  status: 'complete',
 };
 
 function checkCurrentTab() {
   chrome.tabs.query(queryOptions, function (obj) {
+    if (obj.length === 0) return;
+
     console.log(obj);
   });
 }
 
+function changeInfoFilter(changeInfo) {
+  if (changeInfo.status === 'complete' || changeInfo.hasOwnProperty('audible'))
+    return true;
+
+  return false;
+}
+
 //Listeners
 chrome.tabs.onActivated.addListener(checkCurrentTab);
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-  if (changeInfo.hasOwnProperty('url') || changeInfo.hasOwnProperty('audible'))
+chrome.tabs.onUpdated.addListener(function (_, changeInfo, tab) {
+  if (changeInfoFilter(changeInfo) && tab.url.includes(URLSnippet)) {
     checkCurrentTab();
+  }
 });
