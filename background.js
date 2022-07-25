@@ -6,20 +6,10 @@ const queryOptions = {
   url: ['https://*.youtube.com/*'],
 };
 
-let startTime = '';
-let endTime = '';
-let elapsedTime = 0;
-
 const now = new Date();
 const today = new Date(
   `${now.getFullYear()} ${now.getMonth() + 1} ${now.getDate()}`
 ).getTime();
-
-function viewStorage() {
-  chrome.storage.sync.get(`${today}`, function (obj) {
-    console.log(obj);
-  });
-}
 
 async function isTimerRunning() {
   const { isRunning } = await chrome.storage.sync.get('isRunning');
@@ -49,14 +39,14 @@ async function init() {
   }
 }
 
-async function updateStorage(time) {
+async function updateStorage() {
+  const { startTime } = await chrome.storage.sync.get('startTime');
+  const currentTime = new Date();
+  const elapsedTime = (currentTime - new Date(startTime)) / 1000;
+
   const { history } = await chrome.storage.sync.get('history');
-
   const dataObj = history.find((entry) => entry.date === today);
-
-  console.log(`Old time: ${dataObj.time}`);
-  dataObj.time += time;
-  console.log(`Updated time: ${dataObj.time}`);
+  dataObj.time += elapsedTime;
 
   await chrome.storage.sync.set({ history: history });
   console.log('Time Updated');
@@ -67,19 +57,13 @@ async function startTimer() {
   if (await isTimerRunning()) return;
   await chrome.storage.sync.set({ isRunning: true });
 
-  await chrome.storage.sync.set({ startTime: new Date().toString() });
-  console.log('Timer Start');
+  await chrome.storage.sync.set({ startTime: new Date().getTime() });
 }
 
 async function stopTimer() {
   if (!(await isTimerRunning())) return;
   await chrome.storage.sync.set({ isRunning: false });
-
-  const { startTime } = await chrome.storage.sync.get('startTime');
-  const endTime = new Date();
-  elapsedTime = (endTime - new Date(startTime)) / 1000;
-
-  updateStorage(elapsedTime);
+  updateStorage();
   console.log('Timer Stop');
 }
 
