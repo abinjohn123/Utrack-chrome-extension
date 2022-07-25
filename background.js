@@ -6,14 +6,13 @@ const queryOptions = {
   url: ['https://*.youtube.com/*'],
 };
 
-let isTimerActive = false;
 let startTime = '';
 let endTime = '';
 let elapsedTime = 0;
 
 const now = new Date();
 const today = new Date(
-  `${now.getFullYear()} ${now.getMonth()} ${now.getDate()}`
+  `${now.getFullYear()} ${now.getMonth() + 1} ${now.getDate()}`
 ).getTime();
 
 function viewStorage() {
@@ -22,37 +21,64 @@ function viewStorage() {
   });
 }
 
-async function makeStorageEntry() {
-  const obj = await chrome.storage.sync.get(`${today}`);
-  if (Object.keys(obj).length === 0)
-    chrome.storage.sync.set({ [today]: 0 }, function () {
-      console.log(`${today} entry made in storage`);
+async function isTimerRunning() {
+  const { isRunning } = await chrome.storage.sync.get('isRunning');
+  return isRunning ? true : false;
+}
+
+async function init() {
+  //Check if timer is running
+  if (await isTimerRunning()) return;
+
+  //Initialising history
+  let { history } = await chrome.storage.sync.get('history');
+
+  if (!history) {
+    await chrome.storage.sync.set({ history: [] });
+    ({ history } = await chrome.storage.sync.get('history'));
+    console.log('History array initialised');
+  }
+
+  if (!history.some((entry) => entry.date === today)) {
+    history.push({
+      date: today,
+      time: 0,
     });
+    await chrome.storage.sync.set({ history: history });
+    console.log(`${today} entry made`);
+  }
 }
 
 async function updateStorage(time) {
-  const obj = await chrome.storage.sync.get(`${today}`);
-  const currentElapsed = obj[today];
-  const newElapsed = currentElapsed + time;
-  await chrome.storage.sync.set({ [today]: newElapsed });
-  viewStorage();
+  const { history } = await chrome.storage.sync.get('history');
+
+  const dataObj = history.find((entry) => entry.date === today);
+
+  console.log(`Old time: ${dataObj.time}`);
+  dataObj.time += time;
+  console.log(`Updated time: ${dataObj.time}`);
+
+  await chrome.storage.sync.set({ history: history });
+  console.log('Time Updated');
 }
 
 //Timer start and stop
-function startTimer() {
-  if (isTimerActive) return;
+async function startTimer() {
+  if (await isTimerRunning()) return;
+  await chrome.storage.sync.set({ isRunning: true });
 
-  isTimerActive = true;
-  startTime = new Date();
+  await chrome.storage.sync.set({ startTime: new Date().toString() });
   console.log('Timer Start');
 }
 
-function stopTimer() {
-  if (!isTimerActive) return;
+async function stopTimer() {
+  if (!(await isTimerRunning())) return;
+  await chrome.storage.sync.set({ isRunning: false });
 
-  isTimerActive = false;
-  endTime = new Date();
-  elapsedTime = (endTime - startTime) / 1000;
+  const { startTime } = await chrome.storage.sync.get('startTime');
+  const endTime = new Date();
+  elapsedTime = (endTime - new Date(startTime)) / 1000;
+
   updateStorage(elapsedTime);
   console.log('Timer Stop');
 }
@@ -89,4 +115,4 @@ chrome.tabs.onUpdated.addListener(function (_, changeInfo, tab) {
 });
 
 //INIT
-makeStorageEntry();
+init();
