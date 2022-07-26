@@ -16,7 +16,6 @@ html {
   height: 20rem;
   font-size: 1.8rem;
 
-  /* background-color: #050518; */
   background-image: linear-gradient(
     to right top,
     #07051d,
@@ -34,6 +33,10 @@ html {
   justify-content: center;
 }
 
-.time {
+.time-container {
   font-size: 2.8rem;
+  letter-spacing: 1.1px;
+}
+.time-identifier {
+  font-size: 2rem;
 }
