@@ -20,5 +20,6 @@ const setTime = (sec) => {
       ? `<span class="time">${minutes}</span><span class="time-identifier">m</span> <span class="time">${seconds}</span><span class="time-identifier">s</span>` //Return MM:SS if HH is 00
       : `<span class="time">${hours}</span><span class="time-identifier">h</span> <span class="time">${minutes}</span><span class="time-identifier">m</span>`; // Return in HH:MM:SS
 
+  timeContainer.innerHTML = '';
   timeContainer.append(time);
 };
