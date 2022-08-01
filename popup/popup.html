@@ -12,9 +12,16 @@
   </head>
   <body>
     <div class="container">
-      <p class="time-container" id="time-container"></p>
-      <p class="text">time watched today</p>
+      <div class="top-info">
+        <div class="time-container" id="time-container"></div>
+        <div class="text">time watched today</div>
+      </div>
+      <div class="bottom-info">
+        <canvas id="statChart" width="100" height="100"></canvas>
+      </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.2/chart.min.js"></script>
     <script src="popup.js"></script>
+    <script src="graph.js"></script>
   </body>
 </html>
