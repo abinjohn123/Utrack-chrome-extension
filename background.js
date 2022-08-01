@@ -26,7 +26,6 @@ async function init() {
   if (!history) {
     await chrome.storage.sync.set({ history: [] });
     ({ history } = await chrome.storage.sync.get('history'));
-    console.log('History array initialised');
   }
 
   if (!history.some((entry) => entry.date === today)) {
@@ -35,7 +34,6 @@ async function init() {
       time: 0,
     });
     await chrome.storage.sync.set({ history: history });
-    console.log(`${today} entry made`);
   }
 }
 
@@ -52,7 +50,6 @@ async function updateStorage() {
     elapsedTime = (currentTime - new Date(startTime)) / 1000;
   } else elapsedTime = 0;
 
-  console.log(`Current: ${dataObj.time} | elapsed: ${elapsedTime}`);
   dataObj.time += elapsedTime;
 
   await chrome.storage.sync.set({ history: history });
@@ -62,11 +59,8 @@ async function updateStorage() {
 //Timer start and stop
 async function startTimer() {
   if (await isTimerRunning()) return;
-
   await chrome.storage.sync.set({ isRunning: true });
-
   await chrome.storage.sync.set({ startTime: new Date().getTime() });
-  console.log(`timer start at ${new Date()}`);
 }
 
 async function stopTimer() {
@@ -106,19 +100,22 @@ chrome.tabs.onUpdated.addListener(function (_, changeInfo, tab) {
     checkYouTubeTabs();
   }
 });
-chrome.runtime.onMessage.addListener(function (
-  _message,
-  _sender,
-  sendResponse
-) {
-  messageHandler(_message, _sender, sendResponse);
+chrome.runtime.onMessage.addListener(function (message, _sender, sendResponse) {
+  messageHandler(message, _sender, sendResponse);
   return true;
 });
 
-async function messageHandler(_message, _sender, sendResponse) {
-  const time = await updateStorage();
-  console.log('timestat request received: ', time);
-  sendResponse({ timeStat: time });
+async function messageHandler(message, _sender, sendResponse) {
+  const { request } = message;
+  switch (request) {
+    case 'timeStat':
+      const time = await updateStorage();
+      sendResponse({ timeStat: time });
+      break;
+    case 'history':
+      const { history } = await chrome.storage.sync.get('history');
+      sendResponse({ history: history });
+  }
 }
 
 //INIT
