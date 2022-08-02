@@ -36,7 +36,7 @@ html {
 
   padding-top: 2rem;
   padding-bottom: 2rem;
-  border-bottom: dashed 3px rgba(255, 87, 87, 0.4);
+  border-bottom: dashed 2px rgba(255, 87, 87, 0.4);
 }
 
 .time-container {
@@ -45,4 +45,12 @@ html {
 }
 .time-identifier {
   font-size: 2rem;
+}
+
+.top-identifier-text {
+  transform: translateY(-6px);
+}
+
+.bottom-info {
+  padding: 0.4rem;
 }
