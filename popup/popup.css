@@ -9,8 +9,8 @@ html {
 }
 
 .container {
-  width: 20rem;
-  height: 30rem;
+  width: 35rem;
+  height: auto;
   font-size: 1.8rem;
 
   background-image: linear-gradient(
