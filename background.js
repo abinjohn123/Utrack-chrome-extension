@@ -17,10 +17,10 @@ async function isTimerRunning() {
 }
 
 async function init() {
-  //Check if timer is running
+  //return if timer is running
   if (await isTimerRunning()) return;
 
-  //Initialising history
+  //Check history array
   let { history } = await chrome.storage.sync.get('history');
 
   if (!history) {
@@ -33,6 +33,9 @@ async function init() {
       date: today,
       time: 0,
     });
+
+    //Remove history older than 8 days
+    history = history.slice(-8);
     await chrome.storage.sync.set({ history: history });
   }
 }
