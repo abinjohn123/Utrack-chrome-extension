@@ -41,18 +41,17 @@ async function updateStorage() {
   const { history } = await chrome.storage.sync.get('history');
   const dataObj = history.find((entry) => entry.date === today);
 
-  const { startTime } = await chrome.storage.sync.get('startTime');
-  const currentTime = new Date();
-  let elapsedTime;
-
   if (await isTimerRunning()) {
-    await chrome.storage.sync.set({ startTime: new Date().getTime() });
-    elapsedTime = (currentTime - new Date(startTime)) / 1000;
-  } else elapsedTime = 0;
+    const { startTime } = await chrome.storage.sync.get('startTime');
+    const currentTime = new Date();
+    const elapsedTime = (currentTime - new Date(startTime)) / 1000;
 
-  dataObj.time += elapsedTime;
+    dataObj.time += elapsedTime;
 
-  await chrome.storage.sync.set({ history: history });
+    await chrome.storage.sync.set({ startTime: currentTime.getTime() });
+    await chrome.storage.sync.set({ history: history });
+  }
+
   return Math.floor(dataObj.time);
 }
 
@@ -65,9 +64,8 @@ async function startTimer() {
 
 async function stopTimer() {
   if (!(await isTimerRunning())) return;
+  const _time = await updateStorage();
   await chrome.storage.sync.set({ isRunning: false });
-  const _time = updateStorage();
-  console.log(`timer stop at ${new Date()}`);
 }
 
 // Check for open YouTube tabs
@@ -115,6 +113,7 @@ async function messageHandler(message, _sender, sendResponse) {
     case 'history':
       const { history } = await chrome.storage.sync.get('history');
       sendResponse({ history: history });
+      break;
   }
 }
 
