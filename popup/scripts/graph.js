@@ -37,6 +37,8 @@ function plotGraph(history) {
     return min;
   });
 
+  Chart.defaults.color = '#ffffff';
+
   const myChart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -46,12 +48,12 @@ function plotGraph(history) {
           label: 'last 7 days',
           data: time,
           backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 99, 132, 0.5)',
+            'rgba(54, 162, 235, 0.5)',
+            'rgba(255, 206, 86, 0.5)',
+            'rgba(75, 192, 192, 0.5)',
+            'rgba(153, 102, 255, 0.5)',
+            'rgba(255, 159, 64, 0.5)',
           ],
           borderColor: [
             'rgba(255, 99, 132, 1)',
@@ -73,6 +75,14 @@ function plotGraph(history) {
             callback: function (value, index, ticks) {
               return value ? `${value}m` : value;
             },
+          },
+          grid: {
+            color: 'rgba(33, 33, 33,0.2)',
+          },
+        },
+        x: {
+          grid: {
+            color: 'rgba(33, 33, 33,0.2)',
           },
         },
       },

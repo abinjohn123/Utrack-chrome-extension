@@ -7,17 +7,37 @@
       href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="popup.css" />
     <title>YouTube Tracker Popup</title>
   </head>
   <body>
     <div class="container">
-      <div class="top-info">
+      <div class="banner banner--top">
+        <p class="title-container">
+          <span class="accent">U</span><span class="text">track</span>
+        </p>
+      </div>
+      <div class="info-block top-info">
         <div class="time-container" id="time-container"></div>
         <p class="top-identifier-text">today</p>
       </div>
-      <div class="bottom-info">
+      <div class="info-block graph">
         <canvas id="statChart" width="100" height="100"></canvas>
+      </div>
+      <div class="banner banner--bottom">
+        <!-- <a href="#" class="button link">buy me a coffee</a> -->
+        <a
+          href="https://www.buymeacoffee.com/abin.john"
+          class="bmc-link link"
+          target="_blank"
+          ><img
+            src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png"
+            alt="Buy Me A Coffee"
+        /></a>
       </div>
     </div>
     <script src="scripts/chart.js"></script>

@@ -1,3 +1,26 @@
+:root {
+  /* --primary: #009688;
+  --primary-light: #52c7b8;
+  --primary-dark: #00675b;
+  --secondary: #004d40;
+  --secondary-light: #39796b;
+  --secondary-dark: #00251a;
+  --text-primary: #000000;
+  --text-secondary: #ffffff;
+  --bg: #eeeeee; */
+
+  /* --primary-light: #c5cae9; */
+  --primary-light: #3f51b5;
+  --primary: #303f9f;
+  --primary-dark: #1d265f;
+  --text-primary: #212121;
+  --text-secondary: #757575;
+  --accent: #009688;
+  --divider: #bdbdbd;
+  --text: #ffffff;
+  --bg: #eeeeee;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -12,20 +35,66 @@ html {
   width: 35rem;
   height: auto;
   font-size: 1.8rem;
+  font-family: 'Nunito', sans-serif;
 
-  background-image: linear-gradient(
+  /* background-image: linear-gradient(
     to right top,
     #07051d,
     #080620,
     #090723,
     #0a0926,
     #0a0a29
-  );
+  ); */
+
+  /* background-color: var(--bg); */
+  background-color: var(--primary);
   color: #e6e6e9;
-  font-family: 'Gentium Book Plus', serif;
 
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+}
+.banner {
+  background-color: var(--primary-dark);
+  color: var(--text);
+}
+
+.banner--top {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.title-container {
+  display: flex;
+  align-items: flex-end;
+  font-size: 3rem;
+}
+.title-container > .accent {
+  font-weight: 600;
+}
+.title-container > .text {
+  font-weight: 300;
+}
+
+.icon {
+  margin-left: auto;
+  height: 24px;
+  width: 24px;
+  stroke: var(--text);
+
+  cursor: pointer;
+}
+
+.info-block {
+  width: 95%;
+  background-color: var(--primary-light);
+  align-self: center;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+  margin-bottom: 1rem;
 }
 
 .top-info {
@@ -34,23 +103,43 @@ html {
   justify-content: center;
   align-items: center;
 
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-  border-bottom: dashed 2px rgba(255, 87, 87, 0.4);
+  padding: 1rem 0;
+  color: var(--text);
 }
 
 .time-container {
-  font-size: 2.8rem;
+  font-size: 3.2rem;
   letter-spacing: 1.1px;
+  margin-bottom: -5px;
+  font-family: 'Gentium Book Plus', serif;
 }
 .time-identifier {
-  font-size: 2rem;
+  font-size: 2.4rem;
 }
 
-.top-identifier-text {
-  transform: translateY(-6px);
+.graph {
+  padding: 1rem;
 }
 
-.bottom-info {
-  padding: 0.4rem;
+.banner--bottom {
+  padding: 0.8rem;
+  font-size: 1.6rem;
+
+  display: flex;
+  align-items: center;
+}
+
+.link,
+.link:visited,
+.link:active {
+  text-decoration: none;
+}
+
+.bmc-link {
+  display: flex;
+  align-items: center;
+  height: 4rem;
+}
+.bmc-link img {
+  height: 100%;
 }
