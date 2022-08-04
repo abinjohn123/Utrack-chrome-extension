@@ -132,7 +132,7 @@ html {
   border-bottom: none;
   border-top: solid 1px var(--divider);
   background-color: var(--primary-light);
-  padding: 0.8rem;
+  padding: 1rem;
   font-size: 1.6rem;
 
   display: flex;
@@ -148,8 +148,21 @@ html {
 .bmc-link {
   display: flex;
   align-items: center;
-  height: 4rem;
+  height: 3.6rem;
 }
 .bmc-link img {
+  height: 100%;
+}
+
+.socials-container {
+  margin-left: auto;
+  display: flex;
+  gap: 1rem;
+}
+.social-element {
+  width: 2.8rem;
+  height: 2.8rem;
+}
+.social-element img {
   height: 100%;
 }
