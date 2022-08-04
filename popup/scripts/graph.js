@@ -12,7 +12,7 @@ function getTooltipLabel({ time: sec }) {
   let seconds = Math.floor(sec - hours * 3600 - minutes * 60); //  get seconds
 
   [hours, minutes, seconds] = [hours, minutes, seconds].map(
-    (time) => (time < 10 ? '0' + time : '' + time) //Add 0 at the start if time is less than 10
+    (time) => String(time).padStart(2, '0') //Add 0 at the start if time is less than 10
   );
 
   return hours === '00' ? `${minutes}m ${seconds}s` : `${hours}h ${minutes}m`;
