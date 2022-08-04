@@ -1,4 +1,7 @@
 :root {
+  /* #########################
+            TEAL - GREEN
+     ######################### */
   /* --primary: #009688;
   --primary-light: #52c7b8;
   --primary-dark: #00675b;
@@ -9,8 +12,11 @@
   --text-secondary: #ffffff;
   --bg: #eeeeee; */
 
+  /* #########################
+        PURPLE - BLUE
+     ######################### */
   /* --primary-light: #c5cae9; */
-  --primary-light: #3f51b5;
+  /* --primary-light: #3f51b5;
   --primary: #303f9f;
   --primary-dark: #1d265f;
   --text-primary: #212121;
@@ -18,7 +24,17 @@
   --accent: #009688;
   --divider: #bdbdbd;
   --text: #ffffff;
-  --bg: #eeeeee;
+  --bg: #eeeeee; */
+
+  /* #########################
+            WHITE-BLUE
+     ######################### */
+  --bg: #f5f5f5;
+  --primary-light: #ffffff;
+  --secondary: #1976d2;
+  --divider: #dadbdd;
+  --text-secondary: #ffffff;
+  --text: #2c2e38;
 }
 
 * {
@@ -32,45 +48,36 @@ html {
 }
 
 .container {
-  width: 35rem;
+  width: 30rem;
   height: auto;
   font-size: 1.8rem;
   font-family: 'Nunito', sans-serif;
 
-  /* background-image: linear-gradient(
-    to right top,
-    #07051d,
-    #080620,
-    #090723,
-    #0a0926,
-    #0a0a29
-  ); */
-
-  /* background-color: var(--bg); */
-  background-color: var(--primary);
-  color: #e6e6e9;
+  background-color: var(--bg);
+  color: var(--text);
 
   display: flex;
   flex-direction: column;
   align-items: stretch;
 }
 .banner {
-  background-color: var(--primary-dark);
-  color: var(--text);
+  background-color: var(--secondary);
+  color: var(--text-secondary);
+  border-bottom: solid 1px var(--divider);
 }
 
 .banner--top {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 0.8rem;
+  padding: 0.5rem 1rem;
   margin-bottom: 1rem;
 }
 
 .title-container {
   display: flex;
   align-items: flex-end;
-  font-size: 3rem;
+  font-size: 2.8rem;
 }
 .title-container > .accent {
   font-weight: 600;
@@ -93,8 +100,9 @@ html {
   background-color: var(--primary-light);
   align-self: center;
   border-radius: 6px;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
   margin-bottom: 1rem;
+  border: solid 1px var(--divider);
 }
 
 .top-info {
@@ -108,10 +116,9 @@ html {
 }
 
 .time-container {
-  font-size: 3.2rem;
-  letter-spacing: 1.1px;
+  font-size: 3rem;
   margin-bottom: -5px;
-  font-family: 'Gentium Book Plus', serif;
+  /* font-family: 'Gentium Book Plus', serif; */
 }
 .time-identifier {
   font-size: 2.4rem;
@@ -122,6 +129,9 @@ html {
 }
 
 .banner--bottom {
+  border-bottom: none;
+  border-top: solid 1px var(--divider);
+  background-color: var(--primary-light);
   padding: 0.8rem;
   font-size: 1.6rem;
 

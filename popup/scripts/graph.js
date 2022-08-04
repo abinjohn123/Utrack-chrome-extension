@@ -1,6 +1,6 @@
 'use strict';
 
-const ctx = document.getElementById('statChart');
+const ctx = document.getElementById('statChart').getContext('2d');
 
 chrome.runtime.sendMessage({ request: 'history' }, (res) => {
   plotGraph(res.history);
@@ -37,33 +37,23 @@ function plotGraph(history) {
     return min;
   });
 
-  Chart.defaults.color = '#ffffff';
+  const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+  gradient.addColorStop(0, 'rgb(25, 118, 210)');
+  gradient.addColorStop(0.5, 'rgba(255, 255, 255,0)');
 
   const myChart = new Chart(ctx, {
-    type: 'bar',
+    type: 'line',
     data: {
       labels: dates,
       datasets: [
         {
           label: 'last 7 days',
           data: time,
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.5)',
-            'rgba(54, 162, 235, 0.5)',
-            'rgba(255, 206, 86, 0.5)',
-            'rgba(75, 192, 192, 0.5)',
-            'rgba(153, 102, 255, 0.5)',
-            'rgba(255, 159, 64, 0.5)',
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)',
-          ],
-          borderWidth: 1,
+          backgroundColor: gradient,
+          borderColor: '#1976d2',
+          borderWidth: 2.5,
+          tension: 0.1,
+          fill: true,
         },
       ],
     },
@@ -75,15 +65,16 @@ function plotGraph(history) {
             callback: function (value, index, ticks) {
               return value ? `${value}m` : value;
             },
+            stepSize: 20,
+            maxTicksLimit: 10,
           },
+
           grid: {
-            color: 'rgba(33, 33, 33,0.2)',
+            display: false,
           },
         },
         x: {
-          grid: {
-            color: 'rgba(33, 33, 33,0.2)',
-          },
+          display: false,
         },
       },
       plugins: {
