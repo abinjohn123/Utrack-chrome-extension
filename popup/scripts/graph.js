@@ -1,10 +1,29 @@
 'use strict';
 
+const canvasContainer = document.querySelector('.graph');
 const ctx = document.getElementById('statChart').getContext('2d');
+const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+gradient.addColorStop(0, 'rgb(25, 118, 210)');
+gradient.addColorStop(0.5, 'rgba(255, 255, 255,0)');
 
 chrome.runtime.sendMessage({ request: 'history' }, (res) => {
-  plotGraph(res.history);
+  if (res.history.length <= 3) displayCanvasMessage(res.history.length);
+  else plotGraph(res.history);
 });
+
+function displayCanvasMessage(days) {
+  const daysLeft = 3 - days;
+  const canvas = canvasContainer.querySelector('#statChart');
+  canvas.remove();
+  const messageEl = document.createElement('div');
+  messageEl.classList.add('graph--message');
+  messageEl.innerHTML = `<p>Stats will be available ${
+    daysLeft === 0
+      ? 'from tomorrow'
+      : `after ${daysLeft} day${daysLeft > 1 ? 's' : ''}`
+  }</p>`;
+  canvasContainer.append(messageEl);
+}
 
 function getTooltipLabel({ time: sec }) {
   let hours = Math.floor(sec / 3600); // get hours
@@ -16,6 +35,16 @@ function getTooltipLabel({ time: sec }) {
   );
 
   return hours === '00' ? `${minutes}m ${seconds}s` : `${hours}h ${minutes}m`;
+}
+
+function calculateStepSize(timeArray) {
+  const max = Math.max(...timeArray);
+  const min = Math.min(...timeArray);
+  const difference = max - min;
+
+  if (difference > 90) return 30;
+  if (difference > 60) return 15;
+  return Math.floor(difference / timeArray.length);
 }
 
 function plotGraph(history) {
@@ -37,17 +66,12 @@ function plotGraph(history) {
     return min;
   });
 
-  const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-  gradient.addColorStop(0, 'rgb(25, 118, 210)');
-  gradient.addColorStop(0.5, 'rgba(255, 255, 255,0)');
-
   const myChart = new Chart(ctx, {
     type: 'line',
     data: {
       labels: dates,
       datasets: [
         {
-          label: 'last 7 days',
           data: time,
           backgroundColor: gradient,
           borderColor: '#1976d2',
@@ -65,8 +89,8 @@ function plotGraph(history) {
             callback: function (value, index, ticks) {
               return value ? `${value}m` : value;
             },
-            stepSize: 20,
-            maxTicksLimit: 10,
+            stepSize: calculateStepSize(time),
+            maxTicksLimit: 5,
           },
 
           grid: {
@@ -80,7 +104,7 @@ function plotGraph(history) {
       plugins: {
         title: {
           display: true,
-          text: 'Last 7 days',
+          text: `Last ${last7Days.length > 6 ? 7 : last7Days.length - 1} days`,
         },
         legend: {
           display: false,

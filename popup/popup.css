@@ -128,6 +128,16 @@ html {
   padding: 1rem;
 }
 
+.graph--message {
+  height: 15rem;
+  font-size: 1.4rem;
+  padding: 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .banner--bottom {
   border-bottom: none;
   border-top: solid 1px var(--divider);
