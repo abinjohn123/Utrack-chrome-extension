@@ -35,6 +35,9 @@
   --divider: #dadbdd;
   --text-secondary: #ffffff;
   --text: #2c2e38;
+  --indicator-off: #838385;
+  --indicator-on: #4caf50;
+  --indicator-bg: #edf7ee;
 }
 
 * {
@@ -90,7 +93,6 @@ html {
   margin-left: auto;
   height: 24px;
   width: 24px;
-  /* border: 1px solid var(--divider); */
   border-radius: 50%;
   padding: 0.2rem;
   cursor: pointer;
@@ -99,22 +101,22 @@ html {
   align-items: center;
   justify-content: center;
 
-  background-color: #dadbdd;
+  background-color: var(--divider);
   box-shadow: none;
 
   transition: box-shadow 0.3s;
 }
 .--state-on {
-  background-color: #edf7ee;
-  box-shadow: 0px 2px 3px 0 #4caf50;
+  background-color: var(--indicator-bg);
+  box-shadow: 0px 1px 4px 0 var(--indicator-on);
 }
 
 .state-icon {
-  stroke: #838385;
+  stroke: var(--indicator-off);
   transition: stroke 0.3s;
 }
 .--state-on .state-icon {
-  stroke: #4caf50;
+  stroke: var(--indicator-on);
   transition: stroke 0.3s;
 }
 
