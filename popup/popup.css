@@ -69,7 +69,7 @@ html {
 .banner--top {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  /* justify-content: flex-start; */
   padding: 0.5rem 1rem;
   margin-bottom: 1rem;
 }
@@ -86,13 +86,36 @@ html {
   font-weight: 300;
 }
 
-.icon {
+.state-control {
   margin-left: auto;
   height: 24px;
   width: 24px;
-  stroke: var(--text);
-
+  /* border: 1px solid var(--divider); */
+  border-radius: 50%;
+  padding: 0.2rem;
   cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #dadbdd;
+  box-shadow: none;
+
+  transition: box-shadow 0.3s;
+}
+.--state-on {
+  background-color: #edf7ee;
+  box-shadow: 0px 2px 3px 0 #4caf50;
+}
+
+.state-icon {
+  stroke: #838385;
+  transition: stroke 0.3s;
+}
+.--state-on .state-icon {
+  stroke: #4caf50;
+  transition: stroke 0.3s;
 }
 
 .info-block {

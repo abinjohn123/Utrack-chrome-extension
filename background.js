@@ -16,17 +16,32 @@ async function isTimerRunning() {
   return isRunning ? true : false;
 }
 
+async function isExtensionOn() {
+  const { isOn } = await chrome.storage.sync.get('isOn');
+  return isOn;
+}
+
+async function switchExtensionState(state) {
+  await chrome.storage.sync.set({ isOn: state });
+
+  if (state) checkYouTubeTabs();
+  else stopTimer();
+}
+
 async function init() {
   //return if timer is running
   if (await isTimerRunning()) return;
 
   //Check history array
   let { history } = await chrome.storage.sync.get('history');
+  let isOn = await isExtensionOn();
 
   if (!history) {
     await chrome.storage.sync.set({ history: [] });
     ({ history } = await chrome.storage.sync.get('history'));
   }
+
+  if (!isOn) await switchExtensionState(true);
 
   if (!history.some((entry) => entry.date === today)) {
     history.push({
@@ -72,7 +87,12 @@ async function stopTimer() {
 }
 
 // Check for open YouTube tabs
-function checkYouTubeTabs() {
+async function checkYouTubeTabs() {
+  if (!(await isExtensionOn())) {
+    const _time = await updateStorage();
+    return;
+  }
+
   chrome.tabs.query(queryOptions, function (tabs) {
     if (tabs.length === 0) {
       stopTimer();
@@ -116,6 +136,18 @@ async function messageHandler(message, _sender, sendResponse) {
     case 'history':
       const { history } = await chrome.storage.sync.get('history');
       sendResponse({ history: history });
+      break;
+    case 'isOn':
+      const { isOn } = await chrome.storage.sync.get('isOn');
+      sendResponse({ isOn: isOn });
+      break;
+    case 'extensionOff':
+      await switchExtensionState(true);
+      sendResponse({ state: true });
+      break;
+    case 'extensionOn':
+      await switchExtensionState(false);
+      sendResponse({ state: false });
       break;
   }
 }
