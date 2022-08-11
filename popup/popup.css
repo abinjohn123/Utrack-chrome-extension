@@ -35,9 +35,6 @@
   --divider: #dadbdd;
   --text-secondary: #ffffff;
   --text: #2c2e38;
-  --indicator-off: #838385;
-  --indicator-on: #4caf50;
-  --indicator-bg: #edf7ee;
 }
 
 * {
@@ -72,7 +69,7 @@ html {
 .banner--top {
   display: flex;
   align-items: center;
-  /* justify-content: flex-start; */
+  justify-content: flex-start;
   padding: 0.5rem 1rem;
   margin-bottom: 1rem;
 }
@@ -89,35 +86,13 @@ html {
   font-weight: 300;
 }
 
-.state-control {
+.icon {
   margin-left: auto;
   height: 24px;
   width: 24px;
-  border-radius: 50%;
-  padding: 0.2rem;
+  stroke: var(--text);
+
   cursor: pointer;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background-color: var(--divider);
-  box-shadow: none;
-
-  transition: box-shadow 0.3s;
-}
-.--state-on {
-  background-color: var(--indicator-bg);
-  box-shadow: 0px 1px 4px 0 var(--indicator-on);
-}
-
-.state-icon {
-  stroke: var(--indicator-off);
-  transition: stroke 0.3s;
-}
-.--state-on .state-icon {
-  stroke: var(--indicator-on);
-  transition: stroke 0.3s;
 }
 
 .info-block {
