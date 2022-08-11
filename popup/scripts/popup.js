@@ -1,17 +1,11 @@
 'use strict';
 
-const stateEl = document.querySelector('.state-control');
 const timeContainer = document.getElementById('time-container');
 chrome.runtime.sendMessage({ request: 'timeStat' }, (res) => {
   setTime(res.timeStat);
 });
 
-chrome.runtime.sendMessage({ request: 'isOn' }, (res) => {
-  console.log(`isOn on popup load: ${res.isOn}`);
-  switchButtonState(res.isOn);
-});
-
-function setTime(sec) {
+const setTime = (sec) => {
   let hours = Math.floor(sec / 3600); // get hours
   let minutes = Math.floor((sec - hours * 3600) / 60); // get minutes
   let seconds = sec - hours * 3600 - minutes * 60; //  get seconds
@@ -28,27 +22,4 @@ function setTime(sec) {
 
   timeContainer.innerHTML = '';
   timeContainer.append(time);
-}
-
-function switchButtonState(state) {
-  if (state) {
-    stateEl.classList.add('--state-on');
-    stateEl.dataset.state = 'extensionOn';
-  } else {
-    stateEl.classList.remove('--state-on');
-    stateEl.dataset.state = 'extensionOff';
-  }
-}
-
-function stateClickHandler() {
-  const currentState = stateEl.dataset.state;
-
-  currentState === 'extensionOn'
-    ? switchButtonState(false)
-    : switchButtonState(true);
-  chrome.runtime.sendMessage({ request: currentState }, (res) => {
-    console.log('State: ', res.state);
-  });
-}
-
-stateEl.addEventListener('click', stateClickHandler);
+};
