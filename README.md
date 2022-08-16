@@ -2,7 +2,7 @@
 
 A Chrome extension that tracks the time spent on YouTube and YouTube Music websites.
 
-[![Utrack Screen Shot][product-screenshot]](images/app-image.png)
+![Utrack Screen Shot][product-screenshot](images/app-image.png)
 
 ## Features
 
@@ -30,7 +30,7 @@ As of now, the extension isn't up on the chrome store yet. So the installation w
 git clone https://github.com/abinjohn123/Utrack-chrome-extension.git
 ```
 
-2. Navigate to `chrome://extensions' in Google Chrome
+2. Navigate to `chrome://extensions` in Google Chrome
 3. Enable `Developer Mode` situated at the top-right
 4. Click on `Load unpacked`
 5. Navigate to and select the local repo
