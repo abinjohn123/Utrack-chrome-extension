@@ -2,7 +2,7 @@
 
 A Chrome extension that tracks the time spent on YouTube and YouTube Music websites.
 
-![Utrack Screen Shot][product-screenshot](images/app-image.png)
+![Utrack Screen Shot](images/app-image.png)
 
 ## Features
 
